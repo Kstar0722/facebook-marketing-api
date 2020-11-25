@@ -1,0 +1,1106 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Facebook Ads Marketing API",
+        "version": "1.0.0"
+    },
+    "basePath": "/api",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/password/create": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Send Reset Password link to email",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "User Email",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "properties": {
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        },
+        "/password/reset": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Reset Password using reset link",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "User Email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "User Password",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "Reset Password Token",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "properties": {
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        },
+        "/ad_account/list": {
+            "get": {
+                "tags": [
+                    "Ad Account"
+                ],
+                "summary": "Get All Facebook Ad Accounts",
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "fb_account_id": {
+                                                "description": "Facebook account id",
+                                                "type": "string"
+                                            },
+                                            "ad_accounts": {
+                                                "description": "Facebook ad accounts",
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#/definitions/AdAccount"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/ad_account/{id}": {
+            "put": {
+                "tags": [
+                    "Ad Account"
+                ],
+                "summary": "Add/Update/Remove Product to Ad Account",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ad Account ID",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "product_id",
+                        "in": "query",
+                        "description": "Product ID, The Product id will remove from ad account when it empty",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/AdAccount"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User Register",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "User Name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "User Email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "User Password",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "UUID",
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "type": "date"
+                                        },
+                                        "created_at": {
+                                            "type": "date"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "errors": {
+                                    "properties": {
+                                        "email": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "name": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "password": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "User Login",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "User Email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "User Password",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "access_token": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "description": "UUID",
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "token_type": {
+                                    "type": "string"
+                                },
+                                "expires_in": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "properties": {
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                }
+            }
+        },
+        "/user/{userId}": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update facebook token to long-lived token  after logged in to facebook, Fetch Ad accounts about by fb_user_id",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "fb_token",
+                        "in": "query",
+                        "description": "Facebook token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "fb_user_id",
+                        "in": "query",
+                        "description": "Facebook User ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "description": "UUID",
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "description": "UUID",
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "description": "UUID",
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "properties": {
+                                "error": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/insights": {
+            "post": {
+                "tags": [
+                    "Insights"
+                ],
+                "summary": "Get insights data. it will return `Insights` data about all `Ad Accounts`, if `ad_account_id` and `product_id` aren't provided.",
+                "parameters": [
+                    {
+                        "name": "ad_account_id",
+                        "in": "query",
+                        "description": "If `ad_account_id` is specified, it will return `insights` data by `ad_account_id`.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "product_id",
+                        "in": "query",
+                        "description": "If `product_id` is specified, it will return `insights` data by `product_id`. This param is ignored, if `ad_account_id` is provided.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "_",
+                        "in": "body",
+                        "description": "Parameters available on this endpoint",
+                        "schema": {
+                            "$ref": "#/definitions/insights_params"
+                        },
+                        "type": "object"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/Insights"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/product/list": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get Product List",
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "description": "status",
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "description": "The response data",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Product"
+                                    }
+                                },
+                                "message": {
+                                    "description": "Message",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/product": {
+            "post": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Create Product",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Product Name",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "description": "status",
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "description": "The response data",
+                                    "type": "object",
+                                    "$ref": "#/definitions/Product"
+                                },
+                                "message": {
+                                    "description": "Message",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/product/{productID}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get Product by id",
+                "parameters": [
+                    {
+                        "name": "productID",
+                        "in": "path",
+                        "description": "Product ID",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "description": "status",
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "description": "The response data",
+                                    "type": "object",
+                                    "$ref": "#/definitions/Product"
+                                },
+                                "message": {
+                                    "description": "Message",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Update Product by id",
+                "parameters": [
+                    {
+                        "name": "productID",
+                        "in": "path",
+                        "description": "Product ID",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Product Name",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "description": "status",
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "description": "The response data",
+                                    "type": "object",
+                                    "$ref": "#/definitions/Product"
+                                },
+                                "message": {
+                                    "description": "Message",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Delete Product by id",
+                "parameters": [
+                    {
+                        "name": "productID",
+                        "in": "path",
+                        "description": "Product ID",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "description": "status",
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "description": "The response data",
+                                    "type": "object",
+                                    "$ref": "#/definitions/Product"
+                                },
+                                "message": {
+                                    "description": "Message",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/product/{id}/ad_account/list": {
+            "get": {
+                "tags": [
+                    "Ad Account"
+                ],
+                "summary": "Get Ad Accounts by Product ID",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Product ID",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "description": "status",
+                                    "type": "string"
+                                },
+                                "data": {
+                                    "description": "The response data",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/AdAccount"
+                                    }
+                                },
+                                "message": {
+                                    "description": "Message",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "AdAccount": {
+            "description": "Response for Ad Account",
+            "properties": {
+                "id": {
+                    "description": "UUID",
+                    "type": "integer"
+                },
+                "user_id": {
+                    "description": "User UUID",
+                    "type": "integer"
+                },
+                "fb_user_id": {
+                    "description": "FB User ID",
+                    "type": "string"
+                },
+                "product_id": {
+                    "description": "Product UUID",
+                    "type": "integer | null"
+                },
+                "ad_account_id": {
+                    "description": "FB Ad Account Name",
+                    "type": "string"
+                },
+                "ad_account_name": {
+                    "description": "FB Ad Account ID",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "Created Date",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "Updated Date",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "Insights": {
+            "description": "Response for Insights",
+            "properties": {
+                "ad_account_id": {
+                    "description": "FB Ad Account ID",
+                    "type": "string"
+                },
+                "ad_account_name": {
+                    "description": "FB Ad Account Name",
+                    "type": "string"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "properties": {
+                            "actions": {
+                                "type": "object"
+                            },
+                            "clicks": {
+                                "type": "string"
+                            },
+                            "cost_per_action_type": {
+                                "type": "object"
+                            },
+                            "cpc": {
+                                "type": "string"
+                            },
+                            "cpm": {
+                                "type": "string"
+                            },
+                            "cpp": {
+                                "type": "string"
+                            },
+                            "ctr": {
+                                "type": "string"
+                            },
+                            "date_start": {
+                                "type": "string"
+                            },
+                            "date_stop": {
+                                "type": "string"
+                            },
+                            "impressions": {
+                                "type": "string"
+                            },
+                            "spend": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "insights_params": {
+            "description": "Insights Params",
+            "properties": {
+                "params": {
+                    "properties": {
+                        "date_preset": {
+                            "description": "Default value: `last_30d`, Represents a relative time range. This field is ignored if `time_range` or `time_ranges` is specified.",
+                            "type": "string",
+                            "enum": [
+                                "today",
+                                "yesterday",
+                                "this_month",
+                                "last_month",
+                                "this_quarter",
+                                "lifetime",
+                                "last_3d",
+                                "last_7d",
+                                "last_14d",
+                                "last_28d",
+                                "last_30d",
+                                "last_90d",
+                                "last_week_mon_sun",
+                                "last_week_sun_sat",
+                                "last_quarter",
+                                "last_year",
+                                "this_week_mon_today",
+                                "this_week_sun_today",
+                                "this_year"
+                            ]
+                        },
+                        "time_range": {
+                            "description": "A single time range object. UNIX timestamp not supported. This param is ignored if `time_ranges` is provided.",
+                            "properties": {
+                                "since": {
+                                    "description": "A date in the format of `YYYY-MM-DD`, which means from the beginning midnight of that day.",
+                                    "type": "string"
+                                },
+                                "until": {
+                                    "description": "A date in the format of `YYYY-MM-DD`, which means to the beginning midnight of the following day.",
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "date_presets": {
+                            "description": "Array of time range objects. Time ranges can overlap, for example to return cumulative insights. Each time range will have one result set. If time_ranges is specified, `date_preset` and `time_range` are ignored.",
+                            "type": "array",
+                            "items": {
+                                "properties": {
+                                    "since": {
+                                        "description": "A date in the format of `YYYY-MM-DD`, which means from the beginning midnight of that day.",
+                                        "type": "string"
+                                    },
+                                    "until": {
+                                        "description": "A date in the format of `YYYY-MM-DD`, which means to the beginning midnight of the following day.",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
+        "Product": {
+            "description": "Response for Product",
+            "properties": {
+                "id": {
+                    "description": "Product UUID",
+                    "type": "integer"
+                },
+                "user_id": {
+                    "description": "User UUID",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "FB User ID",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "Created Date",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "Updated Date",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
